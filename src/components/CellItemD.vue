@@ -41,7 +41,7 @@
             'd-line': DLine,
             'd-step': DStep,
             'd-point': DPoint,
-            'd-welcome':DWelcome
+            'd-nil':DWelcome
         },
         watch: {
             redraw: function() {

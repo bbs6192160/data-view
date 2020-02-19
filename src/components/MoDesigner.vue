@@ -250,7 +250,7 @@
                     i: shortid.generate(),
                     config: {},
                     source: [],
-                    type: 'd-welcome',
+                    type: 'd-nil',
                     size: {}
                 })
 

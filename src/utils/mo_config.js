@@ -1,116 +1,30 @@
-const _schema = {
-    'd-switch': {
-        fields: [{
-            type: 'v-text-field',
-            inputType: 'text',
-            label: '标题',
-            model: 'title',
-        }]
-    },
-    'd-lamp': {
-        fields: [{
-            type: 'v-text-field',
-            inputType: 'text',
-            label: '标题',
-            model: 'title',
-        }]
-    },
-    'd-textout': {
-        fields: [{
-            type: 'v-text-field',
-            inputType: 'text',
-            label: '标题',
-            model: 'title',
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '显示行数',
-            model: 'rows',
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '最大保留行数',
-            model: 'max_rows'
-        }]
-    },
-    'd-form': {
-        fields: [{
-            type: 'v-text-field',
-            inputType: 'text',
-            label: '标题',
-            model: 'title',
-        }]
-    },
-    'd-value': {
-        fields: [{
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '最小刻度值',
-            model: 'min',
-            default:'0',
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '最大刻度值',
-            model: 'max',
-            default:'100',
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '过小报警值(黄色)',
-            model: 'min_warnning',
-            default:'0',
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '过大报警值(红色)',
-            model: 'max_warnning',
-            default:'100',
-        }]
-    },
-    'd-line': {
-        fields: [{
-            type: 'v-switch',
-            label: '时序曲线',
-            model: 'istime',
-            default:false
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '采样周期(ms)',
-            //hint: 'ms',
-            model: 'step',
-            visible: function (m) {
-                return (m && m.istime);
+function getTypeSrc(src) {
+    return {
+        height: 300,
+        colHeaders: src.colHeaders ? src.colHeaders :['名称','绑定字段'],
+        licenseKey: 'non-commercial-and-evaluation',
+        stretchH: 'last',
+        width: '100%',
+        currentRowClassName: 'currentCol',
+        colWidths: src.colWidths? src.colWidths:'auto',
+        manualColumnResize: true,
+        rowHeaders: true,
+        wordWrap: false,
+        observeChanges: true,
+        minSpareRows: 1,
+        columns: src.columns?src.columns:[
+            {
+                data: 'title',
+                type: 'text',
             },
-        }]
-    },
-    'd-step': {
-        fields: [{
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '采样周期(ms)',
-            //hint: 'ms',
-            model: 'step'
-        }]
-    },
-    'd-point': {
-        fields: [{
-            type: 'v-switch',
-            label: '时序散点',
-            model: 'istime',
-        }, {
-            type: 'v-text-field',
-            inputType: 'number',
-            label: '采样周期(ms)',
-            //hint: 'ms',
-            model: 'step',
-            visible: function (m) {
-                return (m && m.istime);
-            },
-        }]
+            {
+                data: "target",
+                type: 'autocomplete',
+            }
+        ],
+        language: 'zh-CN',
+        contextMenu: ['row_above', 'row_below', '---------', 'remove_row', '---------', 'undo', 'redo', '---------'],
     }
-
 }
 
 function getBaseSrc() {
@@ -143,41 +57,41 @@ function getBaseSrc() {
     }
 }
 
-const formSchema = {
-    height: 300,
-    colHeaders: ['名称', '输入类型', '绑定对象', '参数'],
-    licenseKey: 'non-commercial-and-evaluation',
-    stretchH: 'last',
-    width: '100%',
-    currentRowClassName: 'currentCol',
-    colWidths: [100, 90, 160, 80],
-    manualColumnResize: true,
-    rowHeaders: true,
-    wordWrap: false,
-    observeChanges: true,
-    minSpareRows: 1,
-    columns: [{
-            data: 'title'
-        }, {
-            data: 'type',
-            type: 'autocomplete',
-            strict: true,
-            allowInvalid: false,
-            source: ['text', 'number', 'select', 'checkbox']
-        },
-        {
-            data: "target",
-            type: 'autocomplete',
-            strict: false,
-            allowInvalid: true,
-            source: ['cvt.']
-        }, {
-            data: 'config'
-        }
-    ],
-    language: 'zh-CN',
-    contextMenu: ['row_above', 'row_below', '---------', 'remove_row', '---------', 'undo', 'redo', '---------'],
-}
+// const formSchema = {
+//     height: 300,
+//     colHeaders: ['名称', '输入类型', '绑定对象', '参数'],
+//     licenseKey: 'non-commercial-and-evaluation',
+//     stretchH: 'last',
+//     width: '100%',
+//     currentRowClassName: 'currentCol',
+//     colWidths: [100, 90, 160, 80],
+//     manualColumnResize: true,
+//     rowHeaders: true,
+//     wordWrap: false,
+//     observeChanges: true,
+//     minSpareRows: 1,
+//     columns: [{
+//             data: 'title'
+//         }, {
+//             data: 'type',
+//             type: 'autocomplete',
+//             strict: true,
+//             allowInvalid: false,
+//             source: ['text', 'number', 'select', 'checkbox']
+//         },
+//         {
+//             data: "target",
+//             type: 'autocomplete',
+//             strict: false,
+//             allowInvalid: true,
+//             source: ['cvt.']
+//         }, {
+//             data: 'config'
+//         }
+//     ],
+//     language: 'zh-CN',
+//     contextMenu: ['row_above', 'row_below', '---------', 'remove_row', '---------', 'undo', 'redo', '---------'],
+// }
 
 function getXYSchema() {
     return {
@@ -235,14 +149,25 @@ function getCitList(bchs, ichs, schs) {
     return res;
 }
 
+import typeList from './type_lists' //组件属性和数据源
+
 export default {
     configSchema: function (type) {
-        return _schema[type];
+        //return _schema[type];
+        return typeList.getSchema(type);
+    },
+    sourceSchemaBase: function (type){
+        if(this.configSchema(type) && this.configSchema(type).source){
+            let src = this.configSchema(type).source;
+            let base = getTypeSrc(src);
+            return base;
+        }
+        return null;
     },
     sourceSchema: function (type, binfs, iinfs, sinfs, istime) {
         let base = null;
         switch (type) {
-            case 'd-switch':
+            //case 'd-switch':
             case 'd-lamp':
                 base = getBaseSrc();
                 base.columns[1].source = getCitList(binfs, null, null);
@@ -253,11 +178,12 @@ export default {
                 base.columns[1].source = getCitList(binfs, iinfs, sinfs);
                 return base;
             case 'd-value':
+            case 'd-table':
                 base = getBaseSrc();
                 base.columns[1].source = getCitList(null, iinfs, null);
                 return base;
-            case 'd-form':
-                return formSchema;
+            //case 'd-form':
+                //return formSchema;
             case 'd-line':
             case 'd-step':
             case 'd-point':
@@ -280,15 +206,24 @@ export default {
                 }
                 return base;
         }
-        return null;
+        return this.sourceSchemaBase(type);
     },
+    //所有组件类型在此定义
     allTypes: [
         {
             title:'通用',
             types:[
+                // {
+                //     type: 'd-welcome',
+                //     name: '空白'
+                // },
+                {
+                    type: 'd-lable',
+                    name: '文本标签'
+                },
                 {
                     type: 'd-btn',
-                    name: '普通按钮'
+                    name: '按钮'
                 },
             ]
         },
@@ -312,6 +247,10 @@ export default {
                     name: '数值表盘'
                 },
                 {
+                    type: 'd-table',
+                    name: '表格'
+                },
+                {
                     type: 'd-line',
                     name: '曲线图'
                 },
@@ -328,6 +267,22 @@ export default {
             title:'控制',
             types:[
                 {
+                    type: 'd-text-input',
+                    name: '文本框'
+                },
+                {
+                    type: 'd-select',
+                    name: '下拉框'
+                },
+                {
+                    type: 'd-tags',
+                    name: '组合框'
+                },
+                {
+                    type: 'd-slider',
+                    name: '滑块'
+                },
+                {
                     type: 'd-switch',
                     name: '开关'
                 },
@@ -335,33 +290,11 @@ export default {
                     type: 'd-form',
                     name: '输入表单'
                 },
+                {
+                    type: 'd-file-input',
+                    name: '文件加载'
+                }
             ]
         },
-        {
-            type: 'd-text',
-            name: '单行文本'
-        },
-        {
-            type: 'd-textout',
-            name: '多行文本'
-        },
-        // {
-        //     type: 'd-value',
-        //     name: '数值表盘'
-        // },
-        //  {
-        //     type: 'd-line',
-        //     name: '曲线图'
-        // }, {
-        //     type: 'd-step',
-        //     name: '阶梯图'
-        // }, {
-        //     type: 'd-point',
-        //     name: '散点图'
-        // }, 
-        // {
-        //     type: 'd-form',
-        //     name: '输入表单'
-        // }
     ],
 }

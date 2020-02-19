@@ -103,8 +103,7 @@ export default {
             }
             if(findItem !=null){
                 this.panel = this.items.indexOf(findItem);
-            }else
-                this.panel = '';
+            }
         }
     }
 }
