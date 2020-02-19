@@ -17,19 +17,17 @@ export default {
         'monitor':Monitor
     },
     methods:{
-        reload(){
+        loadData(){
             let id = this.$route.params.projId;
             let data = localStorage.getItem(id);
-            //window.console.log(data);
             if(data!=null){
                 let res = JSON.parse(data);
                 this.layout = res;
             }
-            this.$forceUpdate();
         }
     },
     created(){
-        this.reload();
+        this.loadData();
     },
 }
 </script>

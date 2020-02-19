@@ -27,6 +27,7 @@
     import DLine from './monitor/DLine';
     import DStep from './monitor/DStep';
     import DPoint from './monitor/DPoint';
+    import DWelcome from './monitor/DWelcome'
 
     export default {
         props: ["selected", "data", "isDesign", "redraw"],
@@ -40,6 +41,7 @@
             'd-line': DLine,
             'd-step': DStep,
             'd-point': DPoint,
+            'd-welcome':DWelcome
         },
         watch: {
             redraw: function() {

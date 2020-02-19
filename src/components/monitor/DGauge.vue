@@ -49,7 +49,7 @@
                 let max = this.config.max || 100;
                 let wmin = this.config.min_warnning || min;
                 let wmax = this.config.max_warnning || max;
-                let v = (max + min) / 2;
+                let v = (Number(max) + Number(min)) / 2;
                 let res = c3.generate({
                     bindto: '#' + this.id,
                     data: {

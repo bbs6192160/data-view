@@ -1,7 +1,7 @@
 const _schema = {
     'd-switch': {
         fields: [{
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'text',
             label: '标题',
             model: 'title',
@@ -9,7 +9,7 @@ const _schema = {
     },
     'd-lamp': {
         fields: [{
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'text',
             label: '标题',
             model: 'title',
@@ -17,17 +17,17 @@ const _schema = {
     },
     'd-textout': {
         fields: [{
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'text',
             label: '标题',
             model: 'title',
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
             label: '显示行数',
             model: 'rows',
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
             label: '最大保留行数',
             model: 'max_rows'
@@ -35,7 +35,7 @@ const _schema = {
     },
     'd-form': {
         fields: [{
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'text',
             label: '标题',
             model: 'title',
@@ -43,37 +43,42 @@ const _schema = {
     },
     'd-value': {
         fields: [{
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
             label: '最小刻度值',
             model: 'min',
+            default:'0',
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
             label: '最大刻度值',
-            model: 'max'
+            model: 'max',
+            default:'100',
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
             label: '过小报警值(黄色)',
             model: 'min_warnning',
+            default:'0',
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
             label: '过大报警值(红色)',
-            model: 'max_warnning'
+            model: 'max_warnning',
+            default:'100',
         }]
     },
     'd-line': {
         fields: [{
-            type: 'checkbox',
+            type: 'v-switch',
             label: '时序曲线',
             model: 'istime',
+            default:false
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
-            label: '采样周期',
-            hint: 'ms',
+            label: '采样周期(ms)',
+            //hint: 'ms',
             model: 'step',
             visible: function (m) {
                 return (m && m.istime);
@@ -82,23 +87,23 @@ const _schema = {
     },
     'd-step': {
         fields: [{
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
-            label: '采样周期',
-            hint: 'ms',
+            label: '采样周期(ms)',
+            //hint: 'ms',
             model: 'step'
         }]
     },
     'd-point': {
         fields: [{
-            type: 'checkbox',
+            type: 'v-switch',
             label: '时序散点',
             model: 'istime',
         }, {
-            type: 'input',
+            type: 'v-text-field',
             inputType: 'number',
-            label: '采样周期',
-            hint: 'ms',
+            label: '采样周期(ms)',
+            //hint: 'ms',
             model: 'step',
             visible: function (m) {
                 return (m && m.istime);
@@ -278,34 +283,82 @@ export default {
         return null;
     },
     allTypes: [
-        // {
-        //     type: 'd-switch',
-        //     name: '开关'
-        // }, {
-        //     type: 'd-lamp',
-        //     name: '指示灯'
-        // },
-        // {
-        //     type: 'd-text',
-        //     name: '单行文本'
-        // },
-        // {
-        //     type: 'd-textout',
-        //     name: '多行文本'
-        // },
         {
-            type: 'd-value',
-            name: '数值表盘'
-        }, {
-            type: 'd-line',
-            name: '曲线图'
-        }, {
-            type: 'd-step',
-            name: '阶梯图'
-        }, {
-            type: 'd-point',
-            name: '散点图'
-        }, 
+            title:'通用',
+            types:[
+                {
+                    type: 'd-btn',
+                    name: '普通按钮'
+                },
+            ]
+        },
+        {
+            title:'监视',
+            types:[
+                {
+                    type: 'd-lamp',
+                    name: '指示灯'
+                },
+                {
+                    type: 'd-text',
+                    name: '单行文本'
+                },
+                {
+                    type: 'd-textout',
+                    name: '多行文本'
+                },
+                {
+                    type: 'd-value',
+                    name: '数值表盘'
+                },
+                {
+                    type: 'd-line',
+                    name: '曲线图'
+                },
+                {
+                    type: 'd-step',
+                    name: '阶梯图'
+                }, {
+                    type: 'd-point',
+                    name: '散点图'
+                }, 
+            ]
+        },
+        {
+            title:'控制',
+            types:[
+                {
+                    type: 'd-switch',
+                    name: '开关'
+                },
+                {
+                    type: 'd-form',
+                    name: '输入表单'
+                },
+            ]
+        },
+        {
+            type: 'd-text',
+            name: '单行文本'
+        },
+        {
+            type: 'd-textout',
+            name: '多行文本'
+        },
+        // {
+        //     type: 'd-value',
+        //     name: '数值表盘'
+        // },
+        //  {
+        //     type: 'd-line',
+        //     name: '曲线图'
+        // }, {
+        //     type: 'd-step',
+        //     name: '阶梯图'
+        // }, {
+        //     type: 'd-point',
+        //     name: '散点图'
+        // }, 
         // {
         //     type: 'd-form',
         //     name: '输入表单'

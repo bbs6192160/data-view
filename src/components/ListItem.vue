@@ -1,5 +1,5 @@
 <template>
-    <v-list-item :to="m_editing ? null :{ name: 'Designer', params:{projId: id},query: { name: title }}"
+    <v-list-item :to="m_editing ? null :{ name: 'Viewer', params:{projId: id},query: { name: title }}"
         @mouseover="m_hoting=true" @mouseleave="m_hoting=false">
         <v-list-item-icon>
             <v-icon>view_list</v-icon>
@@ -9,16 +9,16 @@
         </v-text-field>
         <v-list-item-title v-else>{{m_title}}</v-list-item-title>
         <v-spacer></v-spacer>
-        <v-btn icon small target="_blank" v-if="!m_editing && m_hoting" @click.prevent="onEditing">
+        <v-btn icon small target="_blank" v-if="!m_editing && m_hoting" @click.prevent="onEditing" title="编辑">
             <v-icon>edit</v-icon>
         </v-btn>
-        <v-btn icon small target="_blank" v-if="!m_editing && m_hoting" @click.prevent="onDelItem">
+        <v-btn icon small target="_blank" v-if="!m_editing && m_hoting" @click.prevent="onDelItem" title="删除">
             <v-icon>delete</v-icon>
         </v-btn>
-        <v-btn icon small target="_blank" v-if="m_editing" @click.prevent="onEndEdit">
+        <v-btn icon small target="_blank" v-if="m_editing" @click.prevent="onEndEdit" title="完成">
             <v-icon>done</v-icon>
         </v-btn>
-        <v-btn icon small target="_blank" v-if="m_editing" @click.prevent="onCancelEdit">
+        <v-btn icon small target="_blank" v-if="m_editing" @click.prevent="onCancelEdit" title="取消">
             <v-icon>close</v-icon>
         </v-btn>
     </v-list-item>

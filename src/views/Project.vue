@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-app-bar :clipped-right="$vuetify.breakpoint.lgAndUp" clipped-left app color="blue darken-3" dark>
-            <!-- <v-app-bar-nav-icon @click.stop="toggle_left_panel"></v-app-bar-nav-icon> -->
+            <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title>
                 <span>{{proj_name}}</span>
             </v-toolbar-title>
@@ -24,9 +24,32 @@
                 </v-btn>
             </router-link>
         </v-app-bar>
-        <router-view />
-    </v-container>
+        <router-view/>
 
+            <v-navigation-drawer
+                v-model="drawer"
+                absolute
+                left
+                temporary
+                >
+                <v-list>
+                    <v-list-item
+                    v-for="item in items"
+                    :key="item.title"
+                    link
+                    @click="onDrawerClick(item)"
+                    >
+                    <v-list-item-icon>
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+            </v-navigation-drawer>
+    </v-container>
 </template>
 
 <script>
@@ -34,6 +57,11 @@
         data: () => ({
             proj_id: -1,
             proj_name: '',
+            drawer:false,
+            items: [
+                {type:'export',title: '导出JSON', icon: 'mdi-export' },
+                {type:'import', title: '导入JSON', icon: 'mdi-import' },
+            ],
         }),
         created: function () {
             this.proj_id = this.$route.params.projId;
@@ -43,10 +71,10 @@
             //         this.proj_name = res.name
             //     })
         },
-        methods: {
-            toggle_left_panel: function () {
-                //this.$store.commit("toggle_left_panel");
-            },
+        methods:{
+            // onDrawerClick(item){
+            //     //window.console.log(item.type)
+            // }
         }
     }
 </script>

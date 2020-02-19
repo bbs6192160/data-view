@@ -15,7 +15,7 @@
             </script-editor>-->
             <div v-if="isDesign">
                 <v-btn icon title="添加组件" @click="createItem"
-                    style="position: absolute; bottom:-50px; left:0px; z-index:999">
+                    style="position: absolute; bottom:-50px; left:0px; z-index:0">
                     <v-icon>add</v-icon>
                 </v-btn>
                 <!-- <v-btn icon title="编辑脚本" @click="isCoding=!isCoding"
@@ -23,7 +23,7 @@
                     <v-icon>code</v-icon>
                 </v-btn> -->
                 <v-btn icon title="预览" @click="isDesign=!isDesign"
-                    style="position: absolute; bottom:-50px; left:60px; z-index:999">
+                    style="position: absolute; bottom:-50px; left:60px; z-index:0">
                     <v-icon>mdi-monitor</v-icon>
                 </v-btn>
                 <!-- <v-btn icon title="执行" @click="play"
@@ -44,20 +44,20 @@
         <v-navigation-drawer v-model="showcfg" :width="600" temporary app right>
             <template v-slot:prepend>
                 <v-list-item-title class="pt-3 pb-0 px-5">组件类型</v-list-item-title>
-                <v-radio-group v-model="selected_type" row class="py-0 px-5 mx-3">
+                <type-tabs v-model="selected_type" :reload="showcfg" :schema="types"></type-tabs>
+                <!-- <v-radio-group v-model="selected_type" row class="py-0 px-5 mx-3">
                     <v-layout wrap>
                         <v-flex lg4 v-for="item in types" v-bind:key="item.type">
                             <v-radio :label="item.name" :value="item.type" class="mt-3"></v-radio>
                         </v-flex>
                     </v-layout>
-                </v-radio-group>
+                </v-radio-group> -->
             </template>
-            <div v-if="selected && selected.config">
+            <div v-if="selected && selected.config && el_schema">
                 <v-divider></v-divider>
+                <v-list-item-title class="pt-3 pb-0 px-5">属性</v-list-item-title>
                 <v-card flat class="py-3 mx-12">
-                    <!--<vue-form-generator :schema="el_schema" :model="selected.config" :options="formOptions"
-                        @model-updated="onChartConfigChanged">
-                    </vue-form-generator>-->
+                <mo-form :schema="el_schema" :model="selected.config" @change="onChartConfigChanged"></mo-form>
                 </v-card>
             </div>
             <div v-if="selected && selected.source && src_schema">
@@ -80,11 +80,13 @@
     import CellItem from './CellItemD';
     //import autosave from './../utils/autosave';
     import mocfg from "../utils/mo_config";
+    import MoForm from './MoForm'
+    import TypeTabs from './TypeTabs'
     //import ScriptEditor from './MoScript';
-    import {
-        HotTable
-    } from '@handsontable/vue';
+
+    import { HotTable } from '@handsontable/vue';
     import 'handsontable/dist/handsontable.full.css';
+    import 'handsontable/languages/zh-CN'
 
     export default {
         components: {
@@ -92,6 +94,9 @@
             'GridItem': VueGridLayout.GridItem,
             'cell-item': CellItem,
             "hot-table": HotTable,
+            "mo-form":  MoForm,
+            'type-tabs':TypeTabs,
+            //'vue-form-generator':VueFormGenerator,
             //"script-editor": ScriptEditor,
         },
         //mixins: [autosave],
@@ -116,7 +121,7 @@
                     validateAfterChanged: true,
                     validateAsync: true,
                 },
-                layout:this.initLayout,
+                //layout:this.initLayout,
                 selected: null,
                 col_num: 24,
                 row_height: 30,
@@ -126,19 +131,19 @@
                 isCoding: false,
                 src_schema: null,
                 redraw: false,
-            };
+            }
         },
         computed: {
-            // layout: function () {
-            //     let id = this.$route.params.projId;
-            //     let data = localStorage.getItem(id);
-            //     window.console.log(data);
-            //     let res = [];
-            //     if(data!=null){
-            //         res = JSON.parse(data);
-            //     }
-            //     return res ? res : [];
-            // },
+            layout:function() {
+                if(this.initLayout){
+                    //本地缓存
+                    let id = this.$route.params.projId;
+                    localStorage.setItem(id,JSON.stringify(this.initLayout));
+                    //window.console.log(JSON.stringify(this.initLayout));
+                    return this.initLayout;
+                }
+                return [];
+            },
             types: function () {
                 return mocfg.allTypes;
             },
@@ -165,6 +170,10 @@
                 let el = this.selected;
                 this.src_schema = this.getsrcSchema(new_type, el && el.config && el.config.istime);
             },
+            showcfg: function(n){
+                if(n == false)
+                    this.reDraw();
+            }
         },
         methods: {
             reDraw: function () {
@@ -172,20 +181,23 @@
                     this.redraw = !this.redraw;
                 }
             },
-            onChartConfigChanged: function (v, n) {
+            selectChanged(new_type){
+                this.selected_type = new_type;
+            },
+            onChartConfigChanged: function (value, name) {
                 this.change_bycmd = false;
-                if (n === 'istime') {
-                    this.src_schema = this.getsrcSchema(this.selected.type, v);
+                if (name === 'istime') {
+                    this.src_schema = this.getsrcSchema(this.selected.type, value);
                 }
             },
             cellResizedEvent: function (i, newH, newW, newHPx, newWPx) {
                 let cell = this.layout.find(p => p.i === i);
                 if (cell) {
                     cell.size = {
-                        width: newWPx,
+                        // 不知为啥 svg width小于30会ERROR:inValid
+                        width: newWPx < 30? 30 :newWPx,
                         height: newHPx
                     };
-                    this.$forceUpdate();
                 }
             },
             getsrcSchema: function (type, istime) {
@@ -233,12 +245,12 @@
                 this.layout.push({
                     x: 0,
                     y: last_y,
-                    w: 10,
-                    h: 10,
+                    w: 6,
+                    h: 4,
                     i: shortid.generate(),
                     config: {},
                     source: [],
-                    type: 'd-line',
+                    type: 'd-welcome',
                     size: {}
                 })
 

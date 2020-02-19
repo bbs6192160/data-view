@@ -129,7 +129,7 @@
             // this.sinData = this.createSinData(this.count,10);
             // let d = ['sin'].concat(this.sinData);
             // this.chart.load({columns:[d] });
-            //this.timer = setInterval(this.flowSinData,100);
+            // this.timer = setInterval(this.flowSinData,100);
         },
         beforeDestroy() {
             clearInterval(this.timer);

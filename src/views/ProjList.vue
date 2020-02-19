@@ -9,7 +9,7 @@
             <v-spacer></v-spacer>
             <v-tooltip right>
               <template v-slot:activator="{ on }">
-                <v-btn icon large @click="showNew=true">
+                <v-btn icon large @click="showNew=true" v-on="on">
                   <v-icon>add_circle</v-icon>
                 </v-btn>
               </template>

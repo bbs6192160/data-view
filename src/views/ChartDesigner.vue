@@ -17,11 +17,6 @@ export default {
         'monitor':Monitor
     },
     methods:{
-      saveData(){
-        //window.console.log("save new")
-        let id = this.$route.params.projId;
-        localStorage.setItem(id,JSON.stringify(this.layout));
-      },
       loadData(){
         let id = this.$route.params.projId;
         let data = localStorage.getItem(id);
@@ -34,16 +29,5 @@ export default {
     created(){
       this.loadData();
     },
-    beforeDestroy(){
-      this.saveData();
-    },
-    watch:{
-        layout:{
-          handler() {
-            this.saveData();
-          },
-          deep: true
-        },
-    }
 }
 </script>
