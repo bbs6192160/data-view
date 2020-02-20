@@ -7,8 +7,9 @@
             <v-card>
                 <v-card-title class="headline">{{config.title || '输入'}}</v-card-title>
                 <div class="my-3 mx-8">
-                <vue-form-generator :schema="dlgSchema" :model="model" :options="formOptions">
-                </vue-form-generator>
+                <!-- <vue-form-generator :schema="dlgSchema" :model="model" :options="formOptions">
+                </vue-form-generator> -->
+                <mo-form :schema="dlgSchema" :model="model"></mo-form>
                 </div>
                 <v-card-actions>
                     <div class="flex-grow-1"></div>
@@ -25,8 +26,12 @@
 </template>
 
 <script>
+import MoForm from '../MoForm'
     export default {
         props: ["config", "source"],
+        components:{
+            'mo-form':MoForm
+        },
         data: function () {
             return {
                 showDlg: false,
@@ -75,9 +80,9 @@
                                     label: s.title || '<名称>'
                                 }
                                 break;
-                            case 'select':
+                            case 'boolean':
                                 fd = {
-                                    type: 'select',
+                                    type: 'check',
                                     label: s.title || '<名称>',
                                     values: this.getValues(s.config),
                                     selectOptions: {
@@ -85,9 +90,9 @@
                                     }
                                 }
                                 break;
-                            case 'checkbox':
+                            case 'array':
                                 fd = {
-                                    type: 'checkbox',
+                                    type: 'combobox',
                                     label: s.title || '<名称>'
                                 }
                                 break;

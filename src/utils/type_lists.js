@@ -1,6 +1,6 @@
 //组件默认属性
 const defaultFields = [{
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'text',
     label: '标题',
     model: 'title',
@@ -24,17 +24,17 @@ const defaultSrc = {
 
 //多行文本属性
 const textOutFields = [{
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'text',
     label: '标题',
     model: 'title',
 }, {
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'number',
     label: '显示行数',
     model: 'rows',
 }, {
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'number',
     label: '最大保留行数',
     model: 'max_rows'
@@ -42,25 +42,25 @@ const textOutFields = [{
 
 //数值表盘属性
 const valueFields = [{
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'number',
     label: '最小刻度值',
     model: 'min',
     default:'0',
 }, {
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'number',
     label: '最大刻度值',
     model: 'max',
     default:'100',
 }, {
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'number',
     label: '过小报警值(黄色)',
     model: 'min_warnning',
     default:'0',
 }, {
-    type: 'v-text-field',
+    type: 'input',
     inputType: 'number',
     label: '过大报警值(红色)',
     model: 'max_warnning',
@@ -78,7 +78,7 @@ const formSrc = {
         type: 'autocomplete',
         strict: true,
         allowInvalid: false,
-        source: ['text', 'number', 'select', 'checkbox']
+        source: ['text', 'number', 'boolean','array'] // 'select'
     },
     {
         data: "target",
@@ -98,8 +98,6 @@ function getDefalutSchema (){
 }
 
 const _schema = {
-    'd-switch': getDefalutSchema(),
-    'd-lamp': getDefalutSchema(),
     'd-textout': {
         fields: textOutFields,
         source: defaultSrc,
@@ -114,15 +112,15 @@ const _schema = {
     },
     'd-line': {
         fields: [{
-            type: 'v-switch',
+            type: 'switch',
             label: '时序曲线',
             model: 'istime',
             default:false
         }, {
-            type: 'v-text-field',
+            type: 'input',
             inputType: 'number',
-            label: '采样周期(ms)',
-            //hint: 'ms',
+            label: '采样周期',
+            hint: 'ms',
             model: 'step',
             visible: function (m) {
                 return (m && m.istime);
@@ -132,24 +130,24 @@ const _schema = {
     },
     'd-step': {
         fields: [{
-            type: 'v-text-field',
+            type: 'input',
             inputType: 'number',
-            label: '采样周期(ms)',
-            //hint: 'ms',
+            label: '采样周期',
+            hint: 'ms',
             model: 'step'
         }],
         source:defaultSrc,
     },
     'd-point': {
         fields: [{
-            type: 'v-switch',
+            type: 'switch',
             label: '时序散点',
             model: 'istime',
         }, {
-            type: 'v-text-field',
+            type: 'input',
             inputType: 'number',
-            label: '采样周期(ms)',
-            //hint: 'ms',
+            label: '采样周期',
+            hint: 'ms',
             model: 'step',
             visible: function (m) {
                 return (m && m.istime);
@@ -157,28 +155,32 @@ const _schema = {
         }],
         source: defaultSrc,
     },
-    'd-lable': {
+    'n-lable': {
         fields: [{
-            type: 'v-text-field',
+            type: 'input',
             label: '显示文本',
             model: 'title',
             }, 
         ],
     },
-    'd-btn': {
+    'n-btn': {
         fields: [{
-            type: 'v-text-field',
+            type: 'input',
             label: '显示文本',
             model: 'title',
             }, 
         ],
     },
-    'd-table': getDefalutSchema(),
-    'd-text-input': getDefalutSchema(),
-    'd-select': getDefalutSchema(),
-    'd-tags': getDefalutSchema(),
-    'd-slider': getDefalutSchema(),
-    'd-file-input': getDefalutSchema(),
+    'v-text-field': {
+        fields: defaultFields,
+        source: formSrc,
+    },
+    'd-lamp': getDefalutSchema(),
+    'v-switch': getDefalutSchema(),
+    'n-table': getDefalutSchema(),
+    'v-select': getDefalutSchema(),
+    'v-slider': getDefalutSchema(),
+    'v-file-input': getDefalutSchema(),
 }
 
 export default{

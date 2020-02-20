@@ -9,6 +9,13 @@
                     <cell-item :isDesign="isDesign" :data="item" :selected="selected===item" :redraw="redraw"
                         @remove="removeItem" @select="selectItem">
                     </cell-item>
+
+                    <v-btn v-if="isDesign && item.type ==='nil'" class="ma-2" dark color="indigo" :fab="true" 
+                     style="position: absolute; bottom:0px; left:0px; z-index:0"
+                     title="绑定组件类型"
+                    @click="selectItem(item)">
+                        <v-icon >mdi-pencil</v-icon>
+                    </v-btn>
                 </grid-item>
             </grid-layout>
             <!--<script-editor v-if="isCoding" @goback="isCoding=!isCoding" :config="config_.layout">
@@ -250,7 +257,7 @@
                     i: shortid.generate(),
                     config: {},
                     source: [],
-                    type: 'd-nil',
+                    type: 'nil',
                     size: {}
                 })
 

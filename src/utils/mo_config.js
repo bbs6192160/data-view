@@ -218,11 +218,11 @@ export default {
                 //     name: '空白'
                 // },
                 {
-                    type: 'd-lable',
+                    type: 'n-lable',
                     name: '文本标签'
                 },
                 {
-                    type: 'd-btn',
+                    type: 'n-btn',
                     name: '按钮'
                 },
             ]
@@ -247,7 +247,7 @@ export default {
                     name: '数值表盘'
                 },
                 {
-                    type: 'd-table',
+                    type: 'n-table',
                     name: '表格'
                 },
                 {
@@ -267,23 +267,19 @@ export default {
             title:'控制',
             types:[
                 {
-                    type: 'd-text-input',
+                    type: 'v-text-field',
                     name: '文本框'
                 },
                 {
-                    type: 'd-select',
-                    name: '下拉框'
+                    type: 'v-select',
+                    name: '下拉框',
                 },
                 {
-                    type: 'd-tags',
-                    name: '组合框'
-                },
-                {
-                    type: 'd-slider',
+                    type: 'v-slider',
                     name: '滑块'
                 },
                 {
-                    type: 'd-switch',
+                    type: 'v-switch',
                     name: '开关'
                 },
                 {
@@ -291,7 +287,7 @@ export default {
                     name: '输入表单'
                 },
                 {
-                    type: 'd-file-input',
+                    type: 'v-file-input',
                     name: '文件加载'
                 }
             ]

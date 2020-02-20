@@ -1,8 +1,8 @@
 <template>
 <div>
     <v-row v-for="(item,index) in items" :key="index">
-        <component v-if="item.visible ? item.visible(config) :true" v-bind:is="item.type" v-model="config[item.model]" 
-        :type="item.inputType" :label="item.label"
+        <component v-if="item.visible ? item.visible(config) :true" v-bind:is="PraseType(item.type)" v-model="config[item.model]" 
+        :type="item.inputType" :label="item.label" :hint="item.hint"
         @change="Change(config[item.model],item.model)"
         >
         </component>
@@ -10,12 +10,14 @@
 </div>
 </template>
 <script>
-import {VTextField,VSwitch} from 'vuetify/lib'
+import {VTextField,VSwitch,VCheckbox,VCombobox} from 'vuetify/lib'
 export default {
     props:['schema','model'],
     components:{
        "v-text-field":VTextField,
-       "v-switch":VSwitch
+       "v-switch":VSwitch,
+       'v-checkbox':VCheckbox,
+       'v-combobox':VCombobox,
     },
     data(){
         return{
@@ -54,6 +56,20 @@ export default {
         },
         Change(value,name){
             this.$emit('change',value,name);
+        },
+        PraseType(type){
+            switch(type){
+                case 'input' :
+                    return 'v-text-field';
+                case 'switch' :
+                    return 'v-switch';
+                case 'check' :
+                    return 'v-checkbox';
+                case 'combobox' :
+                    return 'v-combobox';
+                default:
+                    return 'v-text-field';
+            }
         }
     },
 }

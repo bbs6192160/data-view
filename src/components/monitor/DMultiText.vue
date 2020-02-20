@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-textarea class="mx-6 my-7" :placeholder="srcList" dense outlined :label="config.title||'<标题>'" height="100%"
-            no-resize filled :rows="rows">
+            no-resize disabled filled :rows="rows">
         </v-textarea>
     </div>
 </template>
