@@ -6,10 +6,17 @@
             style="position: absolute; top:0px; right:0px; z-index:10">
             <v-icon small>mdi-delete</v-icon>
         </v-btn>
-        <v-btn v-if="isDesign && thisType !='nil'" @click="select" small icon :color="selected?'red':'black'" title="设置组件" 
+
+        <v-btn v-if="isDesign" @click="clone" small icon color="black" title="复制组件" 
             style="position: absolute; top:0px; right:40px; z-index:10">
+            <v-icon small>mdi-content-copy</v-icon>
+        </v-btn>
+
+        <v-btn v-if="isDesign && thisType !='nil'" @click="select" small icon :color="selected?'red':'black'" title="设置组件" 
+            style="position: absolute; top:0px; right:80px; z-index:10">
             <v-icon small>mdi-wrench</v-icon>
         </v-btn>
+
         <component ref="chart" v-if="data && data.type!='nil'" v-bind:is="thisType"
             :config="data.config" :source="data.source" :size="data.size" :id="'_' + data.i" :isDesign="isDesign">
         </component>
@@ -77,6 +84,9 @@
             },
             select() {
                 this.$emit("select", this.data);
+            },
+            clone() {
+                this.$emit("clone", this.data);
             },
 
         }

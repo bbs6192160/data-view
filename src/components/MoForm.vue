@@ -4,6 +4,7 @@
         <component v-if="item.visible ? item.visible(config) :true" v-bind:is="PraseType(item.type)" v-model="config[item.model]" 
         :type="item.inputType" :label="item.label" :hint="item.hint"
         @change="Change(config[item.model],item.model)"
+        :clearable="item.clearable"  :chips="item.multiple" :multiple="item.multiple"
         >
         </component>
     </v-row>
@@ -21,7 +22,7 @@ export default {
     },
     data(){
         return{
-            defModel:{}
+            multiple:false,
         }
     },
     computed:{
@@ -39,7 +40,7 @@ export default {
                         if(field.default)
                             this.$set(this.model,field.model,field.default)
                         else
-                            this.$set(this.model,field.model,'')
+                            this.$set(this.model,field.model,null)
                     }
                 }
                 return this.model;

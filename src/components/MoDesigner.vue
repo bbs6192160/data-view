@@ -7,7 +7,7 @@
                 <grid-item v-for="item in layout" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i"
                     :key="item.i" @container-resized="cellResizedEvent" @resized="cellResizedEvent">
                     <cell-item :isDesign="isDesign" :data="item" :selected="selected===item" :redraw="redraw"
-                        @remove="removeItem" @select="selectItem">
+                        @remove="removeItem" @select="selectItem" @clone="cloneItem">
                     </cell-item>
 
                     <v-btn v-if="isDesign && item.type ==='nil'" class="ma-2" dark color="indigo" :fab="true" 
@@ -46,6 +46,21 @@
         <v-overlay v-if="isOverlay" :value="!isDesign">
         </v-overlay>
         </div>
+
+<v-row justify="center">
+    <v-dialog v-model="dialog" max-width="290">
+      <v-card>
+        <v-card-title class="headline">是否删除组件?</v-card-title>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="green darken-1" text @click="dialog = false">取消</v-btn>
+          <v-btn color="green darken-1" text @click="clearItem()">好</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+</v-row>
+
+
 
 
         <v-navigation-drawer v-model="showcfg" :width="600" temporary app right>
@@ -138,6 +153,8 @@
                 isCoding: false,
                 src_schema: null,
                 redraw: false,
+                dialog: false,
+                bDialog: true,
             }
         },
         computed: {
@@ -222,14 +239,22 @@
             },
             //删除
             removeItem: function (el) {
-                let idx = 0;
-                for (let e of this.layout) {
-                    if (e === el) {
-                        this.layout.splice(idx, 1);
-                        return;
-                    }
-                    idx += 1;
-                }
+                this.dialog = true;
+                this.selected = el;
+                //let idx = this.layout.indexOf(el);
+                //this.layout.splice(idx, 1);
+                // for (let e of this.layout) {
+                //     if (e === el) {
+                //         this.layout.splice(idx, 1);
+                //         return;
+                //     }
+                //     idx += 1;
+                // }
+            },
+            clearItem:function(){
+                this.dialog = false;
+                let idx = this.layout.indexOf(this.selected);
+                this.layout.splice(idx, 1);
             },
             //选中
             selectItem: function (el) {
@@ -238,9 +263,17 @@
                 this.src_schema = this.getsrcSchema(el.type, istime);
                 this.showcfg = true;
             },
+            //克隆
+            cloneItem: function (el) {
+                let last_y = this.getLastY();
+                let item = JSON.parse(JSON.stringify(el));
+                item.x = 0;
+                item.y = last_y;
+                item.i = shortid.generate();
+                this.layout.push(item);
+            },
 
-            //添加
-            createItem: function () {
+            getLastY(){
                 let last_y = 0;
                 if (this.layout.length === 1) {
                     last_y = this.layout[0].y + this.layout[0].h + 1;
@@ -249,6 +282,11 @@
                         return (n1.y + n1.h) > (n2.y + n2.h) ? (n1.y + n1.h) : (n2.y + n2.h)
                     }) + 1;
                 }
+                return last_y;
+            },
+            //添加
+            createItem: function () {
+                let last_y = this.getLastY();
                 this.layout.push({
                     x: 0,
                     y: last_y,
@@ -260,7 +298,6 @@
                     type: 'nil',
                     size: {}
                 })
-
             },
 
             play: function() {

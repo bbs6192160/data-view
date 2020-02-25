@@ -123,6 +123,7 @@ const _schema = {
             hint: 'ms',
             model: 'step',
             visible: function (m) {
+                window.console.log(JSON.stringify(m));
                 return (m && m.istime);
             },
         }],
@@ -170,6 +171,7 @@ const _schema = {
             model: 'title',
             }, 
         ],
+        source: defaultSrc,
     },
     'v-text-field': {
         fields: defaultFields,
@@ -178,8 +180,45 @@ const _schema = {
     'd-lamp': getDefalutSchema(),
     'v-switch': getDefalutSchema(),
     'n-table': getDefalutSchema(),
-    'v-select': getDefalutSchema(),
-    'v-slider': getDefalutSchema(),
+    'v-select': {
+        fields:[{
+            type: 'input',
+            inputType: 'text',
+            label: '标题',
+            model: 'title',
+        },
+        {
+            type: 'combobox',
+            label: '列表项',
+            model: 'items',
+            multiple:true,
+            clearable:true,
+        },
+        {
+            type: 'switch',
+            label: '多选',
+            model: 'multiple',
+            default: false,
+        },
+        ],
+        source:defaultSrc
+    },
+    'v-slider': {
+        fields:[{
+            type: 'input',
+            inputType: 'number',
+            label: '最小值',
+            model: 'min',
+            default:'0',
+        }, {
+            type: 'input',
+            inputType: 'number',
+            label: '最大值',
+            model: 'max',
+            default:'100',
+        },],
+        source:defaultSrc,
+    },
     'v-file-input': getDefalutSchema(),
 }
 

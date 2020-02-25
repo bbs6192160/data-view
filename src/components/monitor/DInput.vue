@@ -4,14 +4,16 @@
             <v-list-item-title clos="12">{{title}}</v-list-item-title>
             <component v-bind:is="PraseType(item)" v-for="(item, index) in source_" v-bind:key="index"
                 v-model="item.target"  :label="item.title" :hint="item.hint" :type="inputType(item.type)"
-                cols="12" hide-details clearable multiple chips>
+                :items="items" :multiple="multiple" :chips="multiple"
+                cols="12" hide-details clearable thumb-label="always" 
+                :max="max" :min="min" thumb-color="red">
             </component>
         </v-col>
         <v-col cols="12" v-else>
             <v-list-item-title clos="12">{{title}}</v-list-item-title>
             <component v-bind:is="PraseType(null)"
-                label="<标题>" 
-                cols="12" hide-details>
+                label="<请设置数据源>" 
+                cols="12" hide-details disabled>
             </component>
         </v-col>
     </div>
@@ -37,6 +39,32 @@ export default {
                     return this.config.title;
                 }
                 return ''
+            },
+            items: function() {
+                if(this.config && this.config.items) {
+                    return this.config.items;
+                }
+                return ''
+            },
+            multiple:function(){
+                if(this.config && this.config.multiple) {
+                    window.console.log(JSON.stringify(this.config))
+                    if(this.config.multiple == 'true')
+                    return true;
+                }
+                return false;
+            },
+            max: function() {
+                if(this.config && this.config.max) {
+                    return this.config.max;
+                }
+                return 100;
+            },
+            min: function() {
+                if(this.config && this.config.min) {
+                    return this.config.min;
+                }
+                return 0;
             },
             source_:function() {
                 let res = [];
