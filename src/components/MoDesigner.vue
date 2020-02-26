@@ -67,19 +67,19 @@
             <template v-slot:prepend>
                 <v-list-item-title class="pt-3 pb-0 px-5">组件类型</v-list-item-title>
                 <type-tabs v-model="selected_type" :reload="showcfg" :schema="types"></type-tabs>
-                <!-- <v-radio-group v-model="selected_type" row class="py-0 px-5 mx-3">
-                    <v-layout wrap>
-                        <v-flex lg4 v-for="item in types" v-bind:key="item.type">
-                            <v-radio :label="item.name" :value="item.type" class="mt-3"></v-radio>
-                        </v-flex>
-                    </v-layout>
-                </v-radio-group> -->
             </template>
             <div v-if="selected && selected.config && el_schema">
                 <v-divider></v-divider>
                 <v-list-item-title class="pt-3 pb-0 px-5">属性</v-list-item-title>
                 <v-card flat class="py-3 mx-12">
                 <mo-form :schema="el_schema" :model="selected.config" @change="onChartConfigChanged"></mo-form>
+                </v-card>
+            </div>
+            <div v-if="selected && selected.alert && selected.alert.conditions">
+                <v-divider></v-divider>
+                <v-list-item-title class="pt-3 pb-0 px-5">报警</v-list-item-title>
+                <v-card flat class="py-3 mx-12">
+                <alert-form :data="selected.alert.conditions"></alert-form>
                 </v-card>
             </div>
             <div v-if="selected && selected.source && src_schema">
@@ -104,6 +104,7 @@
     import mocfg from "../utils/mo_config";
     import MoForm from './MoForm'
     import TypeTabs from './TypeTabs'
+    import AlertForm from './AlertForm'
     //import ScriptEditor from './MoScript';
 
     import { HotTable } from '@handsontable/vue';
@@ -118,6 +119,7 @@
             "hot-table": HotTable,
             "mo-form":  MoForm,
             'type-tabs':TypeTabs,
+            'alert-form':AlertForm,
             //'vue-form-generator':VueFormGenerator,
             //"script-editor": ScriptEditor,
         },
@@ -294,6 +296,7 @@
                     h: 4,
                     i: shortid.generate(),
                     config: {},
+                    alert :{conditions:[],notifications:null},
                     source: [],
                     type: 'nil',
                     size: {}

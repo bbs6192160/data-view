@@ -123,7 +123,6 @@ const _schema = {
             hint: 'ms',
             model: 'step',
             visible: function (m) {
-                window.console.log(JSON.stringify(m));
                 return (m && m.istime);
             },
         }],
@@ -193,6 +192,7 @@ const _schema = {
             model: 'items',
             multiple:true,
             clearable:true,
+            default :[],
         },
         {
             type: 'switch',
