@@ -25,16 +25,16 @@
                     style="position: absolute; bottom:-50px; left:0px; z-index:0">
                     <v-icon>add</v-icon>
                 </v-btn>
-                <!-- <v-btn icon title="编辑脚本" @click="isCoding=!isCoding"
-                    style="position: absolute; bottom:0px; left:60px; z-index:999">
-                    <v-icon>code</v-icon>
-                </v-btn> -->
-                <v-btn icon title="预览" @click="isDesign=!isDesign"
+                <v-btn icon title="添加警报" @click="showAlert=!showAlert"
                     style="position: absolute; bottom:-50px; left:60px; z-index:0">
+                    <v-icon>mdi-alert</v-icon>
+                </v-btn>
+                <v-btn icon title="预览" @click="isDesign=!isDesign"
+                    style="position: absolute; bottom:-50px; left:120px; z-index:0">
                     <v-icon>mdi-monitor</v-icon>
                 </v-btn>
                 <!-- <v-btn icon title="执行" @click="play"
-                    style="position: absolute; bottom:0px; left:180px; z-index:999">
+                    style="position: absolute; bottom:-50px; left:180px; z-index:999">
                     <v-icon>mdi-play</v-icon>
                 </v-btn> -->
             </div>
@@ -47,18 +47,18 @@
         </v-overlay>
         </div>
 
-<v-row justify="center">
-    <v-dialog v-model="dialog" max-width="290">
-      <v-card>
-        <v-card-title class="headline">是否删除组件?</v-card-title>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="green darken-1" text @click="dialog = false">取消</v-btn>
-          <v-btn color="green darken-1" text @click="clearItem()">好</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-</v-row>
+    <v-row justify="center">
+        <v-dialog v-model="dialog" max-width="290">
+        <v-card>
+            <v-card-title class="headline">是否删除组件?</v-card-title>
+            <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="green darken-1" text @click="dialog = false">取消</v-btn>
+            <v-btn color="green darken-1" text @click="clearItem()">好</v-btn>
+            </v-card-actions>
+        </v-card>
+        </v-dialog>
+    </v-row>
 
 
 
@@ -75,13 +75,6 @@
                 <mo-form :schema="el_schema" :model="selected.config" @change="onChartConfigChanged"></mo-form>
                 </v-card>
             </div>
-            <div v-if="selected && selected.alert && selected.alert.conditions">
-                <v-divider></v-divider>
-                <v-list-item-title class="pt-3 pb-0 px-5">报警</v-list-item-title>
-                <v-card flat class="py-3 mx-12">
-                <alert-form :data="selected.alert.conditions"></alert-form>
-                </v-card>
-            </div>
             <div v-if="selected && selected.source && src_schema">
                 <v-divider></v-divider>
                 <v-card flat class="pa-0">
@@ -89,6 +82,14 @@
                     <div class="py-3 px-8">
                         <hot-table :settings="src_schema" :data="selected.source"></hot-table>
                     </div>
+                </v-card>
+            </div>
+        </v-navigation-drawer>
+
+        <v-navigation-drawer v-model="showAlert" :width="600" temporary app right>
+            <div>
+                <v-card flat class="py-3 mx-12">
+                <alert-form :data="alert"></alert-form>
                 </v-card>
             </div>
         </v-navigation-drawer>
@@ -132,6 +133,15 @@
                 return [];
             }
         },
+        initAlert:{
+            type:Object,
+            default: function(){
+                return {
+                    conditions:[],
+                    notifications:[],
+                };
+            }
+        },
         initOverlay:{
             default:true
         },
@@ -150,6 +160,7 @@
                 col_num: 24,
                 row_height: 30,
                 showcfg: false,
+                showAlert:false,
                 isDesign: this.initDesign,
                 isOverlay: this.initOverlay,
                 isCoding: false,
@@ -170,6 +181,16 @@
                 }
                 return [];
             },
+            alert:function() {
+                if(this.initAlert){
+                    //本地缓存
+                    let id = this.$route.params.projId;
+                    localStorage.setItem('alert_' + id,JSON.stringify(this.initAlert));
+                    //window.console.log(JSON.stringify(this.initAlert))
+                    return this.initAlert;
+                }
+                return null;
+            },
             types: function () {
                 return mocfg.allTypes;
             },
@@ -189,6 +210,22 @@
                 }
                 return null;
             },
+            conditions(){
+                let res =[];
+                if(this.alert && this.alert.conditions){
+                    for(let it of this.alert.conditions)
+                        res.push(it.title);
+                }
+                return res;
+            },
+            notifications(){
+                let res =[];
+                if(this.alert && this.alert.notifications){
+                    for(let it of this.alert.notifications)
+                        res.push(it.title);
+                }
+                return res;
+            }
 
         },
         watch: {
@@ -263,7 +300,14 @@
                 this.selected = el;
                 let istime = el.type === 'd-line' && el.config && el.config.istime;
                 this.src_schema = this.getsrcSchema(el.type, istime);
-                this.showcfg = true;
+                 this.showcfg = true;
+                //导入报警下拉列表
+                for(let it of this.src_schema.columns){
+                    if(it.data ==='conditions')
+                        it.source = this.conditions;
+                    if(it.data ==='notifications')
+                        it.source = this.notifications;
+                }
             },
             //克隆
             cloneItem: function (el) {
@@ -296,7 +340,6 @@
                     h: 4,
                     i: shortid.generate(),
                     config: {},
-                    alert :{conditions:[],notifications:null},
                     source: [],
                     type: 'nil',
                     size: {}

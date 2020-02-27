@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-content>
-        <monitor :initLayout="layout"></monitor>
+        <monitor :initLayout="layout" :initAlert="alert" ></monitor>
     </v-content>
   </div>
 </template>
@@ -9,8 +9,9 @@
 import Monitor from '../components/MoDesigner';
 export default {
     data(){
-      return{
+    return{
         layout:[],
+        alert:{conditions:[],notifications:[]},
       }
     },
     components:{
@@ -20,9 +21,15 @@ export default {
       loadData(){
         let id = this.$route.params.projId;
         let data = localStorage.getItem(id);
+        let alert = localStorage.getItem("alert_"+id);
         if(data!=null){
             let res = JSON.parse(data);
             this.layout = res;
+        }
+        if(alert!=null){
+            let res = JSON.parse(alert);
+            this.alert = res;
+            window.console.log(alert);
         }
       }
     },

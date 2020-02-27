@@ -8,8 +8,8 @@ const defaultFields = [{
 
 //组件默认数据源
 const defaultSrc = {
-    colHeaders:['名称','绑定对象'],
-    colWidths: [160, 180],
+    colHeaders:['名称','绑定对象','报警条件','报警方式'],
+    colWidths: [100, 150,100],
     columns: [
         {
             data: 'title',
@@ -18,6 +18,23 @@ const defaultSrc = {
         {
             data: "target",
             type: 'autocomplete',
+            strict: true,
+            allowInvalid: false,
+            source: ['protocol_1.name', 'protocol_2.name', 'protocol_2.ch']
+        },
+        {
+            data: "conditions",
+            type: 'autocomplete',
+            strict: true,
+            allowInvalid: false,
+            source: ['大于0', '小于100', '[20,50]']
+        },
+        {
+            data: "notifications",
+            type: 'autocomplete',
+            strict: true,
+            allowInvalid: false,
+            source: ['颜色报警', '闪烁报警', '其他']
         }
     ]
 }

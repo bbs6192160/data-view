@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-content>
-        <monitor :initLayout="layout" :initDesign="false" :initOverlay="false"></monitor>
+        <monitor :initLayout="layout" :initAlert="alert" :initDesign="false" :initOverlay="false"></monitor>
     </v-content>
   </div>
 </template>
@@ -11,6 +11,7 @@ export default {
     data(){
         return{
             layout:[],
+            alert:{conditions:[],notifications:[]},
         }
     },
     components:{
@@ -20,9 +21,15 @@ export default {
         loadData(){
             let id = this.$route.params.projId;
             let data = localStorage.getItem(id);
+            let alert = localStorage.getItem("alert_"+id);
             if(data!=null){
                 let res = JSON.parse(data);
                 this.layout = res;
+            }
+            if(alert!=null){
+                let res = JSON.parse(alert);
+                this.alert = res;
+                window.console.log(alert);
             }
         }
     },
