@@ -86,7 +86,7 @@ const valueFields = [{
 
 //form 表单数据源
 const formSrc = {
-    colHeaders:['名称', '输入类型', '绑定对象', '参数'],
+    colHeaders:['名称', '输入类型', '绑定对象', '当前值'],
     colWidths: [100, 90, 160, 80],
     columns: [{
         data: 'title'
@@ -100,6 +100,7 @@ const formSrc = {
     {
         data: "target",
         type: 'autocomplete',
+        source: ['protocol-1', 'protocol-2', 'protocol-3','protocol-4']
     }, {
         data: 'config'
     }
@@ -181,13 +182,28 @@ const _schema = {
         ],
     },
     'n-btn': {
-        fields: [{
-            type: 'input',
-            label: '显示文本',
-            model: 'title',
+        fields: [
+            {
+                type: 'input',
+                label: '显示文本',
+                model: 'title',
+            }, 
+            {
+                type: 'combobox',
+                label: '绑定事件',
+                model: 'function',
+                source: ['通道事件XXX','协议事件XXX'],
             }, 
         ],
-        source: defaultSrc,
+    },
+    'n-img':{
+        fields: [
+            {
+                type: 'text',
+                label: '上传图片',
+                model: 'upload',
+            }, 
+        ],
     },
     'v-text-field': {
         fields: defaultFields,

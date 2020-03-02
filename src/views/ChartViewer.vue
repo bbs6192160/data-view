@@ -29,7 +29,6 @@ export default {
             if(alert!=null){
                 let res = JSON.parse(alert);
                 this.alert = res;
-                window.console.log(alert);
             }
         }
     },

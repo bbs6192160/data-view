@@ -213,10 +213,6 @@ export default {
         {
             title:'通用',
             types:[
-                // {
-                //     type: 'd-welcome',
-                //     name: '空白'
-                // },
                 {
                     type: 'n-lable',
                     name: '文本标签'
@@ -224,6 +220,10 @@ export default {
                 {
                     type: 'n-btn',
                     name: '按钮'
+                },
+                {
+                    type: 'n-img',
+                    name: '图片'
                 },
             ]
         },

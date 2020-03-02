@@ -1,19 +1,20 @@
 <template>
      <div>
-        <v-col cols="12" >
-            <component v-bind:is="type" clos="12">{{title}}</component>
+        <v-col cols="12">
+            <component v-bind:is="type" :src="srcImg">{{type==='v-img'?'':title}}</component>
         </v-col>
     </div>  
 </template>
 
 <script>
-import {VListItemTitle,VBtn,VDataTable} from 'vuetify/lib'
+import {VListItemTitle,VBtn,VDataTable,VImg} from 'vuetify/lib'
     export default {
         props: ["config", "source"],
         components:{
             'v-list-item-title':VListItemTitle,
             'v-btn':VBtn,
             'v-data-table':VDataTable,
+            'v-img':VImg,
         },
         computed:{
             type(){
@@ -26,6 +27,8 @@ import {VListItemTitle,VBtn,VDataTable} from 'vuetify/lib'
                             return 'v-btn';
                         case 'n-table':
                             return 'v-data-table';
+                        case 'n-img':
+                            return 'v-img';
                     }
                     return this.config.reType;
                 }
@@ -35,7 +38,13 @@ import {VListItemTitle,VBtn,VDataTable} from 'vuetify/lib'
                 if(this.config && this.config.title) {
                     return this.config.title;
                 }
-                return '<标题>'
+                return '<名称>'
+            },
+            srcImg(){
+                if(this.config && this.config.upload) {
+                    return this.config.upload;
+                }
+                return ''
             },
             source_:function() {
                 let res = [];

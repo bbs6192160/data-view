@@ -4,7 +4,7 @@
         <component v-if="item.visible ? item.visible(config) :true" v-bind:is="PraseType(item.type)" v-model="config[item.model]" 
         :type="item.inputType" :label="item.label" :hint="item.hint"
         @change="Change(config[item.model],item.model)"
-        :items="item.items"
+        :items="item.source"
         :clearable="item.clearable"  :chips="item.multiple" :multiple="item.multiple"
         >
         </component>

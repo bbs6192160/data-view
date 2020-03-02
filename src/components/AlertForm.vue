@@ -32,7 +32,7 @@
         <v-divider></v-divider>
       <v-row align="center" v-for="(src_item,index) in rules" :key="index">
         <v-col cols="2">
-            <v-text-field v-if="index ==0" value='满足值'></v-text-field>
+            <v-text-field v-if="index ==0" value='值满足'></v-text-field>
             <v-select v-else :items="['且','或']" v-model="src_item.and"></v-select>
         </v-col>
         <!-- <v-col cols="3">

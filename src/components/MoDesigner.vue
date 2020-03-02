@@ -300,13 +300,15 @@
                 this.selected = el;
                 let istime = el.type === 'd-line' && el.config && el.config.istime;
                 this.src_schema = this.getsrcSchema(el.type, istime);
-                 this.showcfg = true;
+                this.showcfg = true;
                 //导入报警下拉列表
-                for(let it of this.src_schema.columns){
-                    if(it.data ==='conditions')
-                        it.source = this.conditions;
-                    if(it.data ==='notifications')
-                        it.source = this.notifications;
+                if(this.src_schema && this.src_schema.columns){
+                    for(let it of this.src_schema.columns){
+                        if(it.data ==='conditions')
+                            it.source = this.conditions;
+                        if(it.data ==='notifications')
+                            it.source = this.notifications;
+                    }
                 }
             },
             //克隆

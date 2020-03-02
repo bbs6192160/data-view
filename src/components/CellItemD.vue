@@ -17,6 +17,11 @@
             <v-icon small>mdi-wrench</v-icon>
         </v-btn>
 
+        <v-avatar v-if="data && data.type!='nil'"
+            style="position: absolute; left: 0;right: 0; top:6px; margin: 0 auto;"
+            color="white" size=15 class="d-inline-flex"> 
+        </v-avatar>
+        <p></p>
         <component ref="chart" v-if="data && data.type!='nil'" v-bind:is="thisType"
             :config="data.config" :source="data.source" :size="data.size" :id="'_' + data.i" :isDesign="isDesign">
         </component>
