@@ -35,11 +35,8 @@
             <v-text-field v-if="index ==0" value='值满足'></v-text-field>
             <v-select v-else :items="['且','或']" v-model="src_item.and"></v-select>
         </v-col>
-        <!-- <v-col cols="3">
-            <v-select :items="['pro1','pro2']" v-model="src_item.traget"></v-select>
-        </v-col> -->
         <v-col>
-            <v-select :items="opItems" v-model="src_item.operate"></v-select>
+            <v-select :items="operateItems" v-model="src_item.operate"></v-select>
         </v-col>
         <v-col v-if="showBegin(src_item.operate)">
             <v-text-field type="number" v-model="src_item.value" ></v-text-field>
@@ -72,7 +69,7 @@
       <v-divider></v-divider>
       <v-list-item-title class="pt-3 pb-0 px-5">类型</v-list-item-title>
       <v-radio-group v-model="selected_type" row class="py-0 px-5 mx-3">
-        <v-flex lg4 v-for="item in types" :key="item.type">
+        <v-flex lg4 v-for="item in alertTypes" :key="item.type">
             <v-radio :label="item.name" :value="item.type" class="mt-3"></v-radio>
         </v-flex>
       </v-radio-group>
@@ -91,32 +88,8 @@
 <script>
 import ListItem from './ListItemGroup'
 import MoForm from './MoForm'
-const _schema = {
-  "n-color":{
-    fields:[{
-          type:'text',
-          label:'颜色',
-          model:'color',
-          default:'red',
-    }]
-  },
-  "n-dialog":{
-    fields:[{
-          type:'text',
-          label:'弹出消息',
-          model:'msg',
-          default:'',
-      },
-      {
-          type:'combobox',
-          label:'严重程度',
-          model:'error',
-          items:['一般','警告','错误','严重'],
-          default:'警告',
-      },
-    ]
-  }
-}
+import altCfg from '../utils/mo_config'
+
 export default {
     props:['data'],
     components:{
@@ -125,25 +98,6 @@ export default {
     },
     data(){
         return{
-            tabItems:[
-                {
-                  title:'报警条件',
-                },
-                {
-                  title:'报警方式'
-                },
-              ],
-            opItems:['大于','小于','区间内','区间外','NULL'],
-            types:[
-                {
-                  name:'颜色报警',
-                  type:'n-color',
-                },
-                {
-                  name:'弹框报警',
-                  type:'n-dialog',
-                }
-              ],
             panel:null,
             defSource:{conditions:[],notifications:[]},
             listitem: null,
@@ -173,8 +127,21 @@ export default {
             return this.data.notifications;
           return null;
         },
+        tabItems(){
+          return altCfg.alertConfig.tabs;
+        },
+        operateItems(){
+            for(let item of altCfg.alertConfig.tabs){
+              if(item.title == '报警条件')
+                return item.source;
+            }
+          return null;
+        },
+        alertTypes(){
+          return altCfg.alertConfig.alertTypes;
+        },
         el_schema(){
-          return _schema[this.selected_type]
+          return altCfg.configSchema(this.selected_type);
         },
         selected_type: {
           get: function () {

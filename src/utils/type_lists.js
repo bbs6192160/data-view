@@ -6,10 +6,11 @@ const defaultFields = [{
     model: 'title',
 }]
 
+
 //组件默认数据源
 const defaultSrc = {
-    colHeaders:['名称','绑定对象','报警条件','报警方式'],
-    colWidths: [100, 150,100],
+    colHeaders:['名称','绑定数据'],
+    colWidths: [160, 180],
     columns: [
         {
             data: 'title',
@@ -22,20 +23,6 @@ const defaultSrc = {
             allowInvalid: false,
             source: ['protocol_1.name', 'protocol_2.name', 'protocol_2.ch']
         },
-        {
-            data: "conditions",
-            type: 'autocomplete',
-            strict: true,
-            allowInvalid: false,
-            source: ['大于0', '小于100', '[20,50]']
-        },
-        {
-            data: "notifications",
-            type: 'autocomplete',
-            strict: true,
-            allowInvalid: false,
-            source: ['颜色报警', '闪烁报警', '其他']
-        }
     ]
 }
 
@@ -144,7 +131,6 @@ const _schema = {
                 return (m && m.istime);
             },
         }],
-        source:defaultSrc,
     },
     'd-step': {
         fields: [{
@@ -174,11 +160,24 @@ const _schema = {
         source: defaultSrc,
     },
     'n-lable': {
-        fields: [{
-            type: 'input',
-            label: '显示文本',
-            model: 'title',
+        fields: [
+            {
+                type: 'input',
+                label: '显示文本',
+                model: 'title',
+            },            
+            {
+                type: 'input',
+                inputType: 'number',
+                label: '字体大小',
+                model: 'size',
             }, 
+            {
+                type: 'input',
+                label: '字体颜色',
+                model: 'color',
+            }, 
+            
         ],
     },
     'n-btn': {
@@ -253,6 +252,31 @@ const _schema = {
         source:defaultSrc,
     },
     'v-file-input': getDefalutSchema(),
+    //报警方式
+    "n-color":{
+        fields:[{
+              type:'text',
+              label:'颜色',
+              model:'color',
+              default:'red',
+        }]
+      },
+      "n-dialog":{
+        fields:[{
+              type:'text',
+              label:'弹出消息',
+              model:'msg',
+              default:'',
+          },
+          {
+              type:'combobox',
+              label:'严重程度',
+              model:'error',
+              source:['一般','警告','错误','严重'],
+              default:'警告',
+          },
+        ]
+      }
 }
 
 export default{

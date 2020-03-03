@@ -27,15 +27,57 @@ function getTypeSrc(src) {
     }
 }
 
-function getBaseSrc() {
+function getAlertSrc(){
     return {
         height: 300,
-        colHeaders: ['名称', '监控对象'],
+        colHeaders: ['监控对象','报警条件','报警方式'],
         licenseKey: 'non-commercial-and-evaluation',
         stretchH: 'last',
         width: '100%',
         currentRowClassName: 'currentCol',
-        colWidths: [160, 180],
+        colWidths: [100,150,100],
+        manualColumnResize: true,
+        rowHeaders: true,
+        wordWrap: false,
+        observeChanges: true,
+        minSpareRows: 1,
+        columns: [
+            {
+                data: "target",
+                type: 'autocomplete',
+                strict: false,
+                allowInvalid: true,
+                source: ['protocol_1.name', 'protocol_2.name', 'protocol_2.ch']
+            },
+            {
+                data: "conditions",
+                type: 'autocomplete',
+                strict: true,
+                allowInvalid: false,
+                source: ['大于0', '小于100', '[20,50]']
+            },
+            {
+                data: "notifications",
+                type: 'autocomplete',
+                strict: true,
+                allowInvalid: false,
+                source: ['颜色报警', '闪烁报警', '其他']
+            }
+        ],
+        language: 'zh-CN',
+        contextMenu: ['row_above', 'row_below', '---------', 'remove_row', '---------', 'undo', 'redo', '---------'],
+    }
+}
+
+function getBaseSrc() {
+    return {
+        height: 300,
+        colHeaders: ['名称', '监控对象','报警条件','报警方式'],
+        licenseKey: 'non-commercial-and-evaluation',
+        stretchH: 'last',
+        width: '100%',
+        currentRowClassName: 'currentCol',
+        colWidths: [100,150,100],
         manualColumnResize: true,
         rowHeaders: true,
         wordWrap: false,
@@ -50,6 +92,20 @@ function getBaseSrc() {
                 strict: false,
                 allowInvalid: true,
                 //source: self.getParas(),
+            },
+            {
+                data: "conditions",
+                type: 'autocomplete',
+                strict: true,
+                allowInvalid: false,
+                source: ['大于0', '小于100', '[20,50]']
+            },
+            {
+                data: "notifications",
+                type: 'autocomplete',
+                strict: true,
+                allowInvalid: false,
+                source: ['颜色报警', '闪烁报警', '其他']
             }
         ],
         language: 'zh-CN',
@@ -96,7 +152,7 @@ function getBaseSrc() {
 function getXYSchema() {
     return {
         height: 300,
-        colHeaders: ['名称', '监控对象', 'X', 'Y'],
+        colHeaders: ['名称','绑定数据','X', 'Y',],
         licenseKey: 'non-commercial-and-evaluation',
         stretchH: 'last',
         width: '100%',
@@ -164,6 +220,10 @@ export default {
         }
         return null;
     },
+    alertSource:function(){
+        let alert =  getAlertSrc();
+        return alert;
+    },
     sourceSchema: function (type, binfs, iinfs, sinfs, istime) {
         let base = null;
         switch (type) {
@@ -207,6 +267,28 @@ export default {
                 return base;
         }
         return this.sourceSchemaBase(type);
+    },
+    //
+    alertConfig:{
+        tabs:[
+            {
+                title:'报警条件',
+                source:['大于','小于','区间内','区间外','NULL'],
+            },{
+                title:'报警方式'
+            }
+        ],
+        //所有的报警方式
+        alertTypes:[
+            {
+                name:'颜色报警',
+                type:'n-color',
+            },
+            {
+                name:'弹框报警',
+                type:'n-dialog',
+            }
+        ],
     },
     //所有组件类型在此定义
     allTypes: [
@@ -286,10 +368,10 @@ export default {
                     type: 'd-form',
                     name: '输入表单'
                 },
-                {
-                    type: 'v-file-input',
-                    name: '文件加载'
-                }
+                // {
+                //     type: 'v-file-input',
+                //     name: '文件加载'
+                // }
             ]
         },
     ],

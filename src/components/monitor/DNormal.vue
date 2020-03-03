@@ -1,7 +1,7 @@
 <template>
      <div>
         <v-col cols="12">
-            <component v-bind:is="type" :src="srcImg">{{type==='v-img'?'':title}}</component>
+            <component v-bind:is="type" :src="srcImg" :style="style">{{type==='v-img'?'':title}}</component>
         </v-col>
     </div>  
 </template>
@@ -33,6 +33,14 @@ import {VListItemTitle,VBtn,VDataTable,VImg} from 'vuetify/lib'
                     return this.config.reType;
                 }
                 return null;
+            },
+            style(){
+                let res = '';
+                if(this.config && this.config.size);
+                  res +='font-size:'+ this.config.size + 'px;';
+                if(this.config && this.config.color);
+                  res +='color:'+ this.config.color +";";
+                return res;
             },
             title: function() {
                 if(this.config && this.config.title) {
