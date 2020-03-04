@@ -1,7 +1,7 @@
 <template>
      <div>
         <v-col cols="12">
-            <component v-bind:is="type" :src="srcImg" :style="style">{{type==='v-img'?'':title}}</component>
+            <component v-bind:is="type" :src="imgSrc" :style="style">{{type==='v-img'?'':title}}</component>
         </v-col>
     </div>  
 </template>
@@ -48,9 +48,9 @@ import {VListItemTitle,VBtn,VDataTable,VImg} from 'vuetify/lib'
                 }
                 return '<名称>'
             },
-            srcImg(){
-                if(this.config && this.config.upload) {
-                    return this.config.upload;
+            imgSrc(){
+                if(this.config && this.config.imgSrc) {
+                    return this.config.imgSrc;
                 }
                 return ''
             },

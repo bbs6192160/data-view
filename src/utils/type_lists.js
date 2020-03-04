@@ -198,7 +198,14 @@ const _schema = {
     'n-img':{
         fields: [
             {
-                type: 'text',
+                type: 'input',
+                label: '图片URL',
+                model: 'imgSrc',
+                default:'https://www.baidu.com/img/bd_logo1.png?qua=high&where=super'
+            }, 
+            {
+                type: 'input',
+                inputType:'file',
                 label: '上传图片',
                 model: 'upload',
             }, 
@@ -255,15 +262,15 @@ const _schema = {
     //报警方式
     "n-color":{
         fields:[{
-              type:'text',
+              type:'input',
               label:'颜色',
               model:'color',
-              default:'red',
+              default:'#FF0000FF',
         }]
       },
       "n-dialog":{
         fields:[{
-              type:'text',
+              type:'input',
               label:'弹出消息',
               model:'msg',
               default:'',

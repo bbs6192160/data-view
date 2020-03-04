@@ -1,6 +1,6 @@
 function getTypeSrc(src) {
     return {
-        height: 300,
+        height: 200,
         colHeaders: src.colHeaders ? src.colHeaders :['名称','绑定字段'],
         licenseKey: 'non-commercial-and-evaluation',
         stretchH: 'last',
@@ -29,7 +29,7 @@ function getTypeSrc(src) {
 
 function getAlertSrc(){
     return {
-        height: 300,
+        height: 200,
         colHeaders: ['监控对象','报警条件','报警方式'],
         licenseKey: 'non-commercial-and-evaluation',
         stretchH: 'last',
@@ -54,14 +54,14 @@ function getAlertSrc(){
                 type: 'autocomplete',
                 strict: true,
                 allowInvalid: false,
-                source: ['大于0', '小于100', '[20,50]']
+                source: ['无']
             },
             {
                 data: "notifications",
                 type: 'autocomplete',
                 strict: true,
                 allowInvalid: false,
-                source: ['颜色报警', '闪烁报警', '其他']
+                source: ['无']
             }
         ],
         language: 'zh-CN',
@@ -71,7 +71,7 @@ function getAlertSrc(){
 
 function getBaseSrc() {
     return {
-        height: 300,
+        height: 200,
         colHeaders: ['名称', '监控对象','报警条件','报警方式'],
         licenseKey: 'non-commercial-and-evaluation',
         stretchH: 'last',
@@ -91,21 +91,21 @@ function getBaseSrc() {
                 type: 'autocomplete',
                 strict: false,
                 allowInvalid: true,
-                //source: self.getParas(),
+                source: ['protocol-1', 'protocol-2', 'protocol-3','protocol-4']
             },
             {
                 data: "conditions",
                 type: 'autocomplete',
                 strict: true,
                 allowInvalid: false,
-                source: ['大于0', '小于100', '[20,50]']
+                source: ['无']
             },
             {
                 data: "notifications",
                 type: 'autocomplete',
                 strict: true,
                 allowInvalid: false,
-                source: ['颜色报警', '闪烁报警', '其他']
+                source: ['无']
             }
         ],
         language: 'zh-CN',
@@ -151,13 +151,13 @@ function getBaseSrc() {
 
 function getXYSchema() {
     return {
-        height: 300,
-        colHeaders: ['名称','绑定数据','X', 'Y',],
+        height: 200,
+        colHeaders: ['名称','绑定(X)','绑定(Y)'],
         licenseKey: 'non-commercial-and-evaluation',
         stretchH: 'last',
         width: '100%',
         currentRowClassName: 'currentCol',
-        colWidths: [120, 160, 100, 100],
+        colWidths: [120, 160, 100],
         manualColumnResize: true,
         rowHeaders: true,
         wordWrap: false,
@@ -167,15 +167,17 @@ function getXYSchema() {
                 data: 'title'
             },
             {
+                data: "x",
+                type: 'autocomplete',
+                strict: false,
+                allowInvalid: true
+            },
+            {
                 data: "target",
                 type: 'autocomplete',
                 strict: false,
                 allowInvalid: true
-            }, {
-                data: 'x'
-            }, {
-                data: 'y'
-            }
+            },
         ],
         language: 'zh-CN',
         contextMenu: ['row_above', 'row_below', '---------', 'remove_row', '---------', 'undo', 'redo', '---------'],
@@ -254,13 +256,14 @@ export default {
                     } else{
                         base.columns[1].source = getCitList(null, iinfs, null);
                     }
+                    base = getBaseSrc();
 
-                    base.colHeaders.pop();
-                    base.colHeaders.pop();
-                    base.colWidths.pop();
-                    base.colWidths.pop();
-                    base.columns.pop();
-                    base.columns.pop();
+                    // base.colHeaders.pop();
+                    // base.colHeaders.pop();
+                    // base.colWidths.pop();
+                    // base.colWidths.pop();
+                    // base.columns.pop();
+                    // base.columns.pop();
                 } else {
                     base.columns[1].source = getCitList(null, null, null);
                 }

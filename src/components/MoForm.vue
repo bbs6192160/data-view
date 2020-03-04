@@ -6,12 +6,34 @@
         @change="Change(config[item.model],item.model)"
         :items="item.source"
         :clearable="item.clearable"  :chips="item.multiple" :multiple="item.multiple"
+        @click.native="onClick(item)"
         >
         </component>
     </v-row>
+        <v-row>
+         <v-dialog v-model="colorDlg" max-width="315">
+            <v-card>
+                <v-card-title class="headline">选择颜色</v-card-title>
+                <v-card-actions>
+                <v-color-picker v-model="config['color']" :swatches="swatches" show-swatches></v-color-picker>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
+        </v-row>
 </div>
 </template>
 <script>
+
+const _swatches=[
+        ['#000000'],
+        ['#FF0000'],
+        ['#FFFF00'],
+        ['#00FF00'],
+        ['#00FFFF'],
+        ['#0000FF'],
+        ['#FF00FF'],
+]
+
 import {VTextField,VSwitch,VCheckbox,VCombobox} from 'vuetify/lib'
 export default {
     props:['schema','model'],
@@ -23,7 +45,8 @@ export default {
     },
     data(){
         return{
-            multiple:false,
+            colorDlg:false,
+            swatches:_swatches,
         }
     },
     computed:{
@@ -41,7 +64,7 @@ export default {
                         if(field.default)
                             this.$set(this.model,field.model,field.default)
                         else
-                            this.$set(this.model,field.model,null)
+                            this.$set(this.model,field.model,'')
                     }
                 }
                 return this.model;
@@ -72,6 +95,10 @@ export default {
                 default:
                     return 'v-text-field';
             }
+        },
+        onClick(item){
+            if(item.type == 'input' && item.model =='color')
+                this.colorDlg = true;
         }
     },
 }

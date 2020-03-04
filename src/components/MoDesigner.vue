@@ -84,6 +84,15 @@
                     </div>
                 </v-card>
             </div>
+            <div v-if="selected && selected.type!='nil' && selected.alert && alert_schema">
+                <v-divider></v-divider>
+                <v-card flat class="pa-0">
+                    <v-list-item-title class="pt-3 pb-0 px-5">报警器</v-list-item-title>
+                    <div class="py-3 px-8">
+                        <hot-table :settings="alert_schema" :data="selected.alert"></hot-table>
+                    </div>
+                </v-card>
+            </div>
         </v-navigation-drawer>
 
         <v-navigation-drawer v-model="showAlert" :width="600" temporary app right>
@@ -207,6 +216,20 @@
             el_schema: function () {
                 if (this.selected) {
                     return mocfg.configSchema(this.selected.type);
+                }
+                return null;
+            },
+            alert_schema(){
+                if (this.selected) {
+                    let res = mocfg.alertSource();
+                    //add alert
+                    for(let it of res.columns){
+                        if(it.data ==='conditions')
+                            it.source = this.conditions;
+                        if(it.data ==='notifications')
+                            it.source = this.notifications;
+                    }
+                    return res;
                 }
                 return null;
             },
@@ -343,6 +366,7 @@
                     i: shortid.generate(),
                     config: {},
                     source: [],
+                    alert: [],
                     type: 'nil',
                     size: {}
                 })
