@@ -3,7 +3,7 @@
         <v-col cols="12" v-if="source_.length>0">
             <v-list-item-title clos="12">{{title}}</v-list-item-title>
             <component v-bind:is="PraseType(item)" v-for="(item, index) in source_" v-bind:key="index"
-                v-model="item.config"  :label="item.title" :hint="item.hint" :type="inputType(item.type)"
+                v-model="model[item.model]"  :label="item.title" :hint="item.hint" :type="inputType(item.type)"
                 :items="items" :multiple="multiple" :chips="multiple"
                 cols="12" hide-details clearable thumb-label="always" 
                 :max="max" :min="min" thumb-color="red">
@@ -32,6 +32,11 @@ export default {
             'v-slider':VSlider,
             'v-combobox':VCombobox,
             'v-file-input':VFileInput,
+        },
+        data(){
+            return{
+                model:{},
+            }
         },
         computed:{
             title: function() {

@@ -70,14 +70,16 @@ import MoForm from '../MoForm'
                                 fd = {
                                     type: 'input',
                                     inputType: 'text',
-                                    label: s.title || '<名称>'
+                                    label: s.title || '<名称>',
+                                    model: s.model,
                                 }
                                 break;
                             case 'number':
                                 fd = {
                                     type: 'input',
                                     inputType: 'number',
-                                    label: s.title || '<名称>'
+                                    label: s.title || '<名称>',
+                                    model: s.model,
                                 }
                                 break;
                             case 'boolean':
@@ -87,13 +89,15 @@ import MoForm from '../MoForm'
                                     values: this.getValues(s.config),
                                     selectOptions: {
                                         noneSelectedText: '<空>'
-                                    }
+                                    },
+                                    model: s.model,
                                 }
                                 break;
                             case 'array':
                                 fd = {
                                     type: 'combobox',
-                                    label: s.title || '<名称>'
+                                    label: s.title || '<名称>',
+                                    model: s.model,
                                 }
                                 break;
                             default:

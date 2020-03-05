@@ -9,17 +9,21 @@
         @click.native="onClick(item)"
         >
         </component>
-    </v-row>
-        <v-row>
-         <v-dialog v-model="colorDlg" max-width="315">
+
+        <v-col v-if="colorInput(item) && config[item.model]!=''" cols='1'>
+            <v-avatar :color="config[item.model]" size="19" style="top:7px">
+            </v-avatar>
+        </v-col>
+
+        <v-dialog v-model="colorDlg" max-width="315">
             <v-card>
                 <v-card-title class="headline">选择颜色</v-card-title>
                 <v-card-actions>
-                <v-color-picker v-model="config['color']" :swatches="swatches" show-swatches></v-color-picker>
+                <v-color-picker v-model="color" :swatches="swatches" show-swatches></v-color-picker>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        </v-row>
+    </v-row>
 </div>
 </template>
 <script>
@@ -45,7 +49,9 @@ export default {
     },
     data(){
         return{
+            color:'',
             colorDlg:false,
+            colorSelected:null,
             swatches:_swatches,
         }
     },
@@ -67,9 +73,16 @@ export default {
                             this.$set(this.model,field.model,'')
                     }
                 }
+                //window.console.log(JSON.stringify(this.model));
                 return this.model;
             }
             return null;
+        }
+    },
+    watch:{
+        color(n){
+            if(this.colorSelected)
+                this.config[this.colorSelected.model] = n;
         }
     },
     methods:{
@@ -96,9 +109,17 @@ export default {
                     return 'v-text-field';
             }
         },
+        colorInput(item){
+            if(item.type == 'input' && item.model && item.model.indexOf('color') != -1)
+                return true;
+            return false;
+        },
         onClick(item){
-            if(item.type == 'input' && item.model =='color')
+            this.colorSelected = null;
+            if(this.colorInput(item)){
+                this.colorSelected = item;
                 this.colorDlg = true;
+            }
         }
     },
 }

@@ -59,6 +59,7 @@
                 this.m_title_editing = this.m_title_editing.trim();
                 self.m_title = self.m_title_editing;
                 self.m_editing = false;
+                this.$emit('change',this.id,this.m_title);
                 // this.$store.dispatch('renameProj', {
                 //         projId: this.id,
                 //         newName: this.m_title_editing

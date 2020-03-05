@@ -73,7 +73,7 @@ const valueFields = [{
 
 //form 表单数据源
 const formSrc = {
-    colHeaders:['名称', '输入类型', '绑定对象', '当前值'],
+    colHeaders:['名称', '输入类型', '绑定对象', '参数'],
     colWidths: [100, 90, 160, 80],
     columns: [{
         data: 'title'
@@ -89,7 +89,7 @@ const formSrc = {
         type: 'autocomplete',
         source: ['protocol-1', 'protocol-2', 'protocol-3','protocol-4']
     }, {
-        data: 'config'
+        data: 'model'
     }
     ]
 }
@@ -176,6 +176,12 @@ const _schema = {
                 type: 'input',
                 label: '字体颜色',
                 model: 'color',
+                clearable:true
+            }, 
+            {
+                type: 'input',
+                label: '链接',
+                model: 'href',
             }, 
             
         ],
@@ -186,6 +192,18 @@ const _schema = {
                 type: 'input',
                 label: '显示文本',
                 model: 'title',
+            },
+            {
+                type: 'input',
+                label: '字体颜色',
+                model: 'color',
+                clearable:true
+            },
+            {
+                type: 'input',
+                label: '背景颜色',
+                model: 'backcolor',
+                clearable:true
             }, 
             {
                 type: 'combobox',

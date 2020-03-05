@@ -1,7 +1,17 @@
 <template>
      <div>
         <v-col cols="12">
-            <component v-bind:is="type" :src="imgSrc" :style="style">{{type==='v-img'?'':title}}</component>
+            <a v-if="type ==='v-list-item-title' && href.length" :style="style" :href='href'>{{title}}</a>
+            <!-- <v-list-item-title v-else-if="type ==='v-list-item-title'" :style="style">{{title}}</v-list-item-title> -->
+            <component v-else v-bind:is="type" :src="imgSrc" :style="style"  :color="config.color"
+            
+            :headers="headers"
+            :items="desserts"
+            :items-per-page="5"
+            :class="selfClass"
+            :caption="caption"
+            >{{type==='v-img'?'':title}}
+            </component>
         </v-col>
     </div>  
 </template>
@@ -15,6 +25,10 @@ import {VListItemTitle,VBtn,VDataTable,VImg} from 'vuetify/lib'
             'v-btn':VBtn,
             'v-data-table':VDataTable,
             'v-img':VImg,
+        },
+        data(){
+            return{
+            }
         },
         computed:{
             type(){
@@ -35,12 +49,21 @@ import {VListItemTitle,VBtn,VDataTable,VImg} from 'vuetify/lib'
                 return null;
             },
             style(){
-                let res = '';
-                if(this.config && this.config.size);
-                  res +='font-size:'+ this.config.size + 'px;';
-                if(this.config && this.config.color);
-                  res +='color:'+ this.config.color +";";
+                let res = {fontSize:'',color:'',backgroundColor:''};
+                if(this.config && this.config.size)
+                    res.fontSize = this.config.size + 'px';
+                if(res.fontSize === 'px')
+                    res.fontSize ='';
+                if(this.config && this.config.color)
+                   res.color = this.config.color;
+                if(this.config && this.config.backcolor)
+                   res.backgroundColor = this.config.backcolor;
                 return res;
+            },
+            selfClass(){
+                if(this.type === 'v-data-table')
+                    return 'elevation-1';
+                return '';
             },
             title: function() {
                 if(this.config && this.config.title) {
@@ -48,11 +71,56 @@ import {VListItemTitle,VBtn,VDataTable,VImg} from 'vuetify/lib'
                 }
                 return '<名称>'
             },
+            caption: function() {
+                if(this.config && this.config.title) {
+                    return this.config.title;
+                }
+                return ''
+            },        
             imgSrc(){
                 if(this.config && this.config.imgSrc) {
                     return this.config.imgSrc;
                 }
                 return ''
+            },
+            href(){
+                if(this.config && this.config.href) {
+                    return this.config.href;
+                }
+                return ''
+            },
+            btnBackColor(){
+                if(this.config && this.config.backcolor) {
+                    return this.config.backcolor;
+                }
+                return ''
+            },
+            headers(){
+                let res = [];
+                if(!this.source) {
+                    return res;
+                }
+                for(let s of this.source) {
+                    if(s.title || s.target) {
+                        res.push({text:s.title,value:s.target});
+                    }
+                }
+                return res;                
+            },
+            desserts(){
+                let res = [];
+                let it = {};
+                for(let i = 0;i<10;i++){
+                    for(let head of this.headers){
+                    if(head.text =='Time')
+                        this.$set(it,head.value,'2020-01-01 12:00:00');
+                    else
+                        this.$set(it,head.value,'测试数据XXX');
+                    }
+                    res.push(it);
+                }
+                //window.console.log(JSON.stringify(res));
+                return res;
             },
             source_:function() {
                 let res = [];

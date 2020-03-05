@@ -33,7 +33,7 @@
             <v-progress-circular indeterminate color="primary" v-if="!items"></v-progress-circular>
             </div>
             <v-list>
-              <list-item v-for="(item) in items" :key="item.id" :id="item.id" :title="item.name" />
+              <list-item v-for="(item) in items" :key="item.id" :id="item.id" :title="item.name" @change="change" />
             </v-list>
           </v-card-text>
         </v-card>
@@ -88,7 +88,7 @@
                 }
               }
 
-
+        localStorage.setItem('project', JSON.stringify(this.items));
         // this.$store.dispatch('delProj', id)
         //   .then((res) => {
         //     if (res && res.id == id) {
@@ -106,7 +106,15 @@
         //     }
         //   })
       },
-
+      change(id,name){
+        for(let item of this.items){
+          if(item.id == id){
+              item.name = name;
+              break;
+          }
+        }
+        localStorage.setItem('project', JSON.stringify(this.items));
+      },
       //新建项目
       createProj: function () {
         this.newProj = this.newProj.trim();
