@@ -82,12 +82,13 @@ const formSrc = {
         type: 'autocomplete',
         strict: true,
         allowInvalid: false,
-        source: ['text', 'number', 'boolean','array'] // 'select'
+        source: ['text', 'number', 'boolean','array'], // 'select'
+        default:'text',
     },
     {
         data: "target",
         type: 'autocomplete',
-        source: ['protocol-1', 'protocol-2', 'protocol-3','protocol-4']
+        source: ['protocol-1', 'protocol-2', 'protocol-3','protocol-4'],
     }, {
         data: 'model'
     }

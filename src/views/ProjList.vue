@@ -76,7 +76,7 @@
 
       //删除项目
       delItem: function (id) {
-        window.console.log("remove " + id)
+        //window.console.log("remove " + id)
          let len = this.items.length;
               for (let i = 0; i < len; i++) {
                 if (this.items[i].id == id) {
@@ -119,12 +119,12 @@
       createProj: function () {
         this.newProj = this.newProj.trim();
         window.console.log( this.newProj)
-        this.items.push(
+        this.items.splice(0,0,
           {
             id:shortid.generate(),
             name:this.newProj,
-          }
-        )
+          });
+        this.showNew = false;
         localStorage.setItem('project', JSON.stringify(this.items));
         // this.$store.dispatch('newProj', this.newProj)
         //   .then(res => {

@@ -70,7 +70,7 @@ export default {
                         if(field.default)
                             this.$set(this.model,field.model,field.default)
                         else
-                            this.$set(this.model,field.model,'')
+                            this.$set(this.model,field.model,null)
                     }
                 }
                 //window.console.log(JSON.stringify(this.model));

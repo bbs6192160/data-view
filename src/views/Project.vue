@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import FileSaver from 'file-saver'
+
     export default {
         data: () => ({
             proj_id: -1,
@@ -72,9 +74,28 @@
             //     })
         },
         methods:{
-            // onDrawerClick(item){
-            //     //window.console.log(item.type)
-            // }
+            onDrawerClick(item){
+                //window.console.log(item.type)
+                if(item.type === 'export'){
+                    let res = {
+                        name:'',
+                        id:'',
+                        layout:[],
+                        alert:null,
+                    }
+                    let layout = localStorage.getItem(this.proj_id);
+                    let alert = localStorage.getItem('alert_'+this.proj_id);
+                    if(layout !=null){
+                        res.name = this.proj_name;
+                        res.id = this.proj_id;
+                        res.layout = layout;
+                        res.alert = alert;
+                        const data = JSON.stringify(res)
+                        var blob = new Blob([data], {type: "application/json;charset=utf-8"});
+                        FileSaver.saveAs(blob, res.name+'_' + res.id + ".json");
+                    }
+                }
+            },
         }
     }
 </script>

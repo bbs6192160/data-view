@@ -4,7 +4,7 @@
             <v-list-item-title clos="12">{{title}}</v-list-item-title>
             <component v-bind:is="PraseType(item)" v-for="(item, index) in source_" v-bind:key="index"
                 v-model="model[item.model]"  :label="item.title" :hint="item.hint" :type="inputType(item.type)"
-                :items="items" :multiple="multiple" :chips="multiple"
+                :items="items" :multiple="item.multiple" :chips="item.multiple"
                 cols="12" hide-details clearable thumb-label="always" 
                 :max="max" :min="min" thumb-color="red">
             </component>
@@ -49,16 +49,16 @@ export default {
                 if(this.config && this.config.items) {
                     return this.config.items;
                 }
-                return ''
+                return [];
             },
-            multiple:function(){
-                if(this.config && this.config.multiple) {
-                    window.console.log(JSON.stringify(this.config))
-                    if(this.config.multiple == 'true')
-                        return true;
-                }
-                return false;
-            },
+            // multiple:function(){
+            //     window.console.log(JSON.stringify(this.config));
+            //     if(this.config && this.config.multiple) {
+            //         window.console.log(JSON.stringify(this.config))
+            //         return this.config.multiple;
+            //     }
+            //     return false;
+            // },
             max: function() {
                 if(this.config && this.config.max) {
                     return this.config.max;
@@ -92,8 +92,10 @@ export default {
                     if(this.config.reType === 'v-text-field'){
                         if(item && item.type === 'boolean')
                             return 'v-checkbox';
-                        if( item && item.type === 'array')
+                        if( item && item.type === 'array'){
+                            this.$set(item,'multiple',true)
                             return 'v-combobox';
+                        }
                     }
                     return this.config.reType;
                 }
