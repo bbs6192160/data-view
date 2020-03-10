@@ -80,16 +80,17 @@
                 <v-card flat class="pa-0">
                     <v-list-item-title class="pt-3 pb-0 px-5">数据源</v-list-item-title>
                     <div class="py-3 px-8">
-                        <hot-table :settings="src_schema" :data="selected.source"></hot-table>
+                        <hot-table :settings="src_schema" :data.sync="selected.source"></hot-table>
                     </div>
                 </v-card>
             </div>
-            <div v-if="selected && selected.type!='nil' && selected.alert && alert_schema">
+            <!-- 多绑定项独立报警器 -->
+            <div v-if="selected && bAlertExtend && selected.alert && alert_schema">
                 <v-divider></v-divider>
                 <v-card flat class="pa-0">
                     <v-list-item-title class="pt-3 pb-0 px-5">报警器</v-list-item-title>
                     <div class="py-3 px-8">
-                        <hot-table :settings="alert_schema" :data="selected.alert"></hot-table>
+                        <hot-table :settings="alert_schema" :data.sync="selected.alert"></hot-table>
                     </div>
                 </v-card>
             </div>
@@ -232,6 +233,15 @@
                     return res;
                 }
                 return null;
+            },
+            bAlertExtend(){
+                //是否显示独立报警器
+                if(this.selected_type){
+                    if(this.selected_type == 'd-line' || this.selected_type == 'd-point')
+                        if(!this.selected.config.istime)
+                            return true;
+                }
+                return false;
             },
             conditions(){
                 let res =[];
